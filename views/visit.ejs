@@ -1,0 +1,104 @@
+
+
+<% include ./partials/header.ejs %>
+<form action="/fileupload" hidden method="post" enctype="multipart/form-data" id="uploadImage">
+  <input type="file"  name="profileImage" accept="capture=camera,image/*">
+</form>
+<form action="/fileuploadCover" hidden method="post" enctype="multipart/form-data" id="uploadcoverImage">
+  <input type="file"  name="profilecoverImage" accept="capture=camera,image/*">
+</form>
+
+<div class="w-full h-[auto]">
+<div class="profile-box  w-full ">
+<img src="/images/uploads/<%= userr.profilecoverImage%>" alt="">
+
+</div>
+<div class="detail w-[40%] h-46  text-center flex justify-center flex-wrap">
+<div class="w-[140px] h-[120px] flex ">
+<div class="img border-0 border-blue-700 rounded-full relative left-3">
+  <img src="/images/uploads/<%= userr.profileImage%>" alt="" >
+  
+ 
+</div>
+
+</div>
+<h2 class="w-full text-[24px] font-bold font-[times] relative bottom-[30px]  block left-1"><%= userr.username %>  </h2>
+
+</div> 
+<div class="post-detail block sm:flex gap-3">
+<div class="profile-details inline-block rounded-md flex items-center flex-col p-3">
+  
+
+  <p class="block text-white text-2xl mt-2 font-[times] h-[auto] flex flex-wrap"><%= userr.bio%></p>
+  <address class="block text-white sm:text-2xl text-[16px] mt-2 font-[times] font-bold italic capitalize"><i class="fa fa-map-marker mr-1"></i><%= userr.homeaddress%></address>
+</div>
+<div class="posts overflow-y-scroll  ml-[-4px]">
+  <div class="w-full flex justify-center " style="flex-wrap: wrap-reverse;">
+  
+    <% user.posts.forEach(function(elem){%>
+     
+      <div class="post h-[auto] w-[82%]  bg-zinc-900 text-white rounded-md mb-3 mt-3 p-2">
+        <form action="/delete/<%= elem._id%>" method="post">
+        <div>
+          <img src="/images/uploads/<%= elem.userImage%>" alt="" class="w-[40px] h-[40px] rounded-full inline-block mr-[8px] "><span class="mt-[8px]"><%= elem.userName %></span>
+        </div>
+        <div id="text" class="span  block mt-2" ><%= elem.Title %> </div>
+        <br>
+        <img src="/images/uploads/<%= elem.postImage %>" alt="" class="w-full h-[300px] mt-[-15px]" id="img">
+        
+      </form>
+      </div>
+      
+    
+      <%})%>
+    
+  </div>
+  
+</div>
+</div>
+</div>
+
+</div>
+
+<script>
+  document.querySelector('#cameraicon').addEventListener('click',function() {
+    document.querySelector('#uploadImage input').click();
+  });
+  document.querySelector('#uploadImage input').addEventListener('change',function(){
+    document.querySelector('#uploadImage').submit();
+  })
+  document.querySelector('#cameraicon-cover').addEventListener('click',function() {
+    document.querySelector('#uploadcoverImage input').click();
+  });
+  document.querySelector('#uploadcoverImage input').addEventListener('change',function(){
+    document.querySelector('#uploadcoverImage').submit();
+  })
+  
+</script>
+<style>
+  #post::-webkit-scrollbar {
+    display: none;
+  }
+   @media only screen and (max-width:600px) {
+    .post{
+      height: auto;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .posts{
+      margin-left: 0px;
+    }
+  }
+  #text {
+  /* Set the desired width */
+  height: auto; /* Adjust height automatically based on content */
+  padding: 10px; /* Optional: for inner spacing */
+  /* Optional: for visual border */
+  overflow-wrap: break-word; /* Ensures text doesn't overflow */
+  word-wrap: break-word; /* Ensures compatibility with older browsers */
+  white-space: normal; /* Allows text wrapping */
+  text-align: justify; /* Justifies the text */
+}
+</style>
+<% include ./partials/footer.ejs %>

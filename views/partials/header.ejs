@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>Document</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+</head>
+<body >
+  <nav class="h-[48px] w-full bg-zinc-800 overflow-hidden sticky top-[0] z-[999999]
+  shadow-[0px_0px_6px_black]">
+    <img src="/photo/lockbook-high-resolution-logo.jpg" alt="" class="contrast-200 mix-blend-screen w-[20%] h-[100px]  relative bottom-[30px] left-[40px] cursor-pointer">
+  </nav>
+
+
+  <% if(dot === true){%>
+    <div class="dot">
+      <div></div>
+      <div></div>
+      <div></div>
+      <ul class="ul">
+        <a href="/home"><li><span>/</span>Home</li></a>
+        <a href="/profile"><li><span>/</span>Profile</li></a>
+        <a href="/users"><li><span>/</span>users</li></a>
+        <a href="/settings"><li><span>/</span>settings</li></a>
+        <a href="/logout"><li><span>/</span>logout</li></a>
+        
+      </ul>
+    </div>
+    <%}%>
+  <script>
+    let dot = true;
+  </script>
+  
+   
+   

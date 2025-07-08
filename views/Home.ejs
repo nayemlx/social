@@ -1,0 +1,438 @@
+<% include ./partials/header.ejs %>
+<style>
+  #posts::-webkit-scrollbar {
+    display: none;
+  }
+  #posts {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  #delete {
+    visibility: hidden;
+  }
+  .option-block {
+    visibility: hidden;
+  }
+  .options {
+    bottom: -100%;
+    transition: 1s;
+  }
+  .option-icon {
+    font-size: larger;
+    margin-right: 20px;
+  }
+  .options ul {
+    list-style-type: none;
+  }
+  .options ul li {
+    border-top: 0.1px solid rgba(180, 178, 178, 0.137);
+    border-bottom: 0.1px solid rgba(180, 178, 178, 0.137);
+    color: #fff;
+    font-size: large;
+  }
+  .options ul li:active {
+    opacity: 0.5;
+    cursor: pointer;
+    background: rgba(146, 175, 182, 0.192);
+  }
+  .dot3 {
+    cursor: pointer;
+  }
+  .dot3:active {
+    opacity: 0.6;
+    background: #56eeee4b;
+  }
+  .post {
+    background: rgb(29, 20, 53);
+    color: white;
+  }
+  #home-block {
+    background: rgba(0, 0, 0, 0.4);
+    transition: 0.6s;
+    opacity: 0;
+    visibility: hidden;
+  }
+  .h-name {
+    position: relative;
+    top: 5px;
+  }
+  .h-input {
+    border: 1px solid green;
+    position: absolute;
+    right: 5%;
+    border-radius: 5px;
+    padding: 8px;
+  }
+  .h-logo-img {
+    height: 100%;
+  }
+  .h-logo-img img {
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .h-logo-img img:active {
+    opacity: 0.5;
+  }
+  .post-c .close-btn {
+    float: right;
+    margin-top: -15px;
+    display: block;
+    margin-bottom: 30px;
+    position: relative;
+    left: 10px;
+    padding: 8px;
+
+    border-radius: 10px;
+  }
+  .post-c .close-btn:active {
+    background-color: rgb(128, 114, 128);
+    opacity: 0.2;
+  }
+  .post-c {
+    transition: 0.6s;
+    top: -100%;
+    padding: 25px;
+    background: rgba(56, 55, 55, 0.918);
+  }
+  .post-c textarea {
+    background: none;
+    outline: 0;
+    height: 160px;
+    min-height: 160px;
+    max-height: 160px;
+    outline: none;
+    width: 100%;
+    margin-top: 10px;
+    color: aliceblue;
+  }
+  @media only screen and (max-width: 600px) {
+    #home-block {
+      background: rgba(0, 0, 0, 0.4);
+      transition: 0.6s;
+      opacity: 0;
+      position: fixed;
+      height: 100%;
+      visibility: hidden;
+    }
+    .post {
+      height: auto;
+      width: 100%;
+      background: #353333;
+    }
+    .post #img {
+      height: 260px;
+    }
+    #posts {
+      width: 100%;
+
+      height: 105%;
+    }
+    #home-block {
+      height: 110%;
+      transition: 1s;
+    }
+    .post-c {
+      transition: 1s;
+    }
+    .h-logo-img img {
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-block;
+    }
+    .h-name {
+      top: -1px;
+      height: 40px;
+      width: 104px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: -44px;
+      margin-left: 58px;
+    }
+    .h-input {
+      width: 50%;
+      right: 5px;
+    }
+    .post-c {
+      width: 100%;
+      height: auto;
+      margin-top: 160px;
+      position: fixed;
+
+      top: 48px;
+    }
+  }
+  #add-more {
+    width: 100%;
+    height: 38px;
+
+    border-radius: 5px;
+    display: flexbox;
+    align-items: center;
+    padding-left: 5px;
+    overflow: hidden;
+  }
+  #add-more .camera {
+    float: right;
+    display: inline-block;
+    background: rgb(99, 98, 98);
+    height: 100%;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  @media only screen and (min-width: 600px) {
+    .h-logo-img img {
+      margin-left: 15px;
+    }
+  }
+  /* #text {
+      cursor: pointer;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      display: inline-block;
+      user-select: none;
+    }
+    #text:active {
+      background-color: #d0d0d0;
+    } */
+  #text {
+    /* Set the desired width */
+    height: auto; /* Adjust height automatically based on content */
+    padding: 10px; /* Optional: for inner spacing */
+    /* Optional: for visual border */
+    overflow-wrap: break-word; /* Ensures text doesn't overflow */
+    word-wrap: break-word; /* Ensures compatibility with older browsers */
+    white-space: normal; /* Allows text wrapping */
+    text-align: justify; /* Justifies the text */
+  }
+</style>
+<div class="w-full h-screen bg-zinc-200 flex justify-center z-[-999999]">
+  <nav class="w-full h-[70px] bg-white flex items-center pl-2">
+    <div class="h-logo-img">
+      <a href="/profile">
+
+
+        <% if(user.profileImage){%>
+        <img
+          src="/images/uploads/<%= user.profileImage%>"
+          class="w-[50px] h-[50px] rounded-full inline-block mr-[5px] cursor-pointer"
+        />
+        <%}else{%>
+        <img
+          src="data:image/png;base64,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"
+          class="w-[50px] h-[50px] rounded-full inline-block mr-[5px] cursor-pointer"
+        />
+        <%}%>
+
+
+      </a>
+      <span class="h-name"><%= user.username%></span>
+    </div>
+    <input
+      type="text"
+      name=""
+      id=""
+      placeholder="Create your post"
+      class="w-[30%] h-input"
+      onclick="addPost()"
+    />
+  </nav>
+
+  <div
+    class="h-screen w-full absolute flex justify-center items-center z-[999]"
+    id="home-block"
+  >
+    <div class="h-[96%] w-[35%] rounded-md post-c absolute">
+      <i class="fa fa-close close-btn text-red-500 md:cursor-pointer" onclick="closePost()"></i>
+      <h1 align="center" class="text-white text-[30px] mt-[10px] font-[times]">
+        Create post
+      </h1>
+      <br />
+      <div>
+        <sup
+          ><h3
+            class="relative left-[35px] top-[10px] text-white font-bold"
+            name="userName"
+          >
+            <%= user.username%>
+          </h3></sup
+        >
+        <% if(user.profileImage){%>
+        <img
+          src="/images/uploads/<%= user.profileImage%>"
+          alt=""
+          class="w-[40px] h-[40px] rounded-full bg-red-600 block"
+          name="userImage"
+        />
+        <%}else{%>
+        <img
+          src="data:image/png;base64,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"
+          alt=""
+          class="w-[40px] h-[40px] rounded-full bg-red-600 block"
+          name="userImage"
+        />
+        <%}%>
+      </div>
+      <form
+        action="/uploadpost"
+        id="postImage"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <textarea
+          type="text"
+          placeholder="write something"
+          class="rounded-md p-1 resize-none"
+          name="Title"
+          id="posttext"
+          maxlength="200"
+        ></textarea>
+        <div class="gatis"></div>
+        <input
+          type="file"
+          accept="capture=camera,image/*"
+          id="postimage"
+          name="postImage"
+          hidden
+        />
+
+        <div id="add-more">
+          <span class="mt-[5px] inline-block">Add photo</span
+          ><i class="fa fa-camera camera" id="camera"></i>
+        </div>
+        <input
+          type="submit"
+          class="btn btn-primary w-full block mt-[6px]"
+          value="post"
+          id="submit"
+        />
+      </form>
+    </div>
+  </div>
+  <div
+    class="h-[92%] w-[76%] bg-zinc-700 mt-[70px] block absolute left-[0] overflow-y-scroll scroll-smooth flex justify-center flex-wrap"
+    id="posts"
+  >
+    <% posts.reverse().forEach(function(elem){%>
+
+    <div
+      class="post h-[auto] w-[550px] rounded-lg mt-3 md:p-1 mb-2"
+      id="dlform"
+    >
+      <div class="p-[12px] pt-3">
+        <i
+          class="fa fa-ellipsis-v float-right right-[20px] rotate-90 mt-[-10px] p-3 cursor-pointer dot3"
+          onclick="blockOn()"
+        ></i>
+        <div>
+          <img
+            src="/images/uploads/<%= elem.userImage%>"
+            alt=""
+            class="w-[40px] h-[40px] rounded-full md:cursor-pointer hover:opacity-50 inline-block mr-[8px] mb-[12px]"
+          /><span
+            class="italic font-[times] relative bottom-[5px]"
+            style="color: rgb(167, 167, 162); text-shadow: 0.3px 0.3px #fff"
+            ><%= elem.userName %>
+          </span>
+        </div>
+        <div class="mb-2 w-full" id="text"><%= elem.Title %></div>
+        <form action="/visit/<%= elem.user %>" method="get">
+          <button
+            type="submit"
+            id="visit"
+            class="btn-info p-1 px-2 rounded-md block mb-2"
+          >
+            <i class="fa fa-user-circle mr-2"></i>Visit profile
+          </button>
+        </form>
+      </div>
+      <div class="w-full h-[320px]">
+        <img
+          src="/images/uploads/<%= elem.postImage %>"
+          alt=""
+          class="w-full h-full"
+          id="img"
+        />
+      </div>
+    </div>
+
+    <%})%>
+  </div>
+</div>
+
+<script>
+  let posttext = document.querySelector("#posttext");
+  let submit = document.querySelector("#submit");
+  var element = document.querySelector("#dlform");
+  let homeB = document.querySelector("#home-block");
+  let postc = document.querySelector(".post-c");
+
+  function closePost() {
+    postc.style.opacity = "0";
+    homeB.style.opacity = "0";
+    homeB.style.visibility = "hidden";
+    postc.style.top = "-100%";
+  }
+  function addPost() {
+    postc.style.opacity = "1";
+    homeB.style.opacity = "1";
+    homeB.style.visibility = "visible";
+    postc.style.top = "0";
+  }
+  document.querySelector("#camera").addEventListener("click", function () {
+    document.querySelector("#postImage #postimage").click();
+  });
+  /* document.querySelector('#submit').addEventListener('submit',function(){
+      document.querySelector('#hscroll').click();
+    })*/
+  let option = document.querySelector(".options");
+  let optionBlock = document.querySelector(".option-block");
+  function blockRemove() {
+    option.style.bottom = "-100%";
+    optionBlock.style.visibility = "hidden";
+  }
+  function blockOn() {
+    option.style.bottom = "0%";
+    optionBlock.style.visibility = "visible";
+  }
+  document.querySelector("#dsubmit").addEventListener("click", function () {
+    document.querySelector("#dlsubmit").click();
+  });
+
+  const textElement = document.getElementById("text");
+  const messageElement = document.getElementById("message");
+  let pressTimer;
+
+  textElement.addEventListener("mousedown", () => {
+    pressTimer = setTimeout(() => {
+      // Copy text to clipboard
+      const text = textElement.textContent;
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          messageElement.textContent = "Text copied to clipboard!";
+        })
+        .catch((err) => {
+          messageElement.textContent = "Failed to copy text.";
+        });
+    }, 1000); // Long press duration (1 second)
+  });
+
+  textElement.addEventListener("mouseup", () => {
+    clearTimeout(pressTimer); // Clear the timer if the user releases early
+  });
+
+  textElement.addEventListener("mouseleave", () => {
+    clearTimeout(pressTimer); // Clear the timer if the user moves the cursor away
+  });
+
+
+  function visit() {
+    document.querySelector("#visit").click();
+  }
+</script>
+<% include ./partials/footer.ejs %>

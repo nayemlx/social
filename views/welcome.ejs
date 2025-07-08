@@ -1,0 +1,21 @@
+<% include ./partials/header.ejs %>
+<div class="w-full h-screen fixed bg-zinc-300">
+<h1 align="center" class="text-[50px] mt-10">Welcome to your profile</h1>
+<div class="w-full h-[80%]  absolute p-4 overflow-scroll">
+  <div
+    class="img-name h-[50%] w-[90%]  p-5 flex items-center justify-center overflow-hidden mt-10"
+  >
+    <div class="img-wlc rounded-full h-[120px] w-[120px] bg-green-500 overflow-hidden
+    absolute left-[10%]  mt-[-2.4%]">
+      <img src="/images/uploads/<%= user.profileImage%>" alt="" class="h-[100%] w-[100%]" /> 
+    </div>
+    <span class="absolute right-[14%] mt-[-2.4%] text-[30px] italic font-[times]" >
+      <%= user.username %></span>
+  </div>
+  <div class="btn-container w-full h-[17%] mt-[10%] flex  items-center pl-[16%] pr-[16%] justify-center fixed bottom-[8px] left-0">
+  <button class="mr-[80%] w-[80px] h-[50px] p-[0px_14px_8px_14px] bg-orange-500 rounded-md hover:opacity-10 ">Not Now</button>
+  <a href="/profile" class=""><button          class=" w-[80px] h-[50px] bg-orange-500 rounded-md hover:opacity-10">OK</button></a>
+</div>
+</div>
+</div>
+<% include ./partials/footer.ejs %>

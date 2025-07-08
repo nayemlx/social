@@ -1,0 +1,21 @@
+<% include ./partials/header.ejs %>
+
+<div class="w-full h-screen bg-zinc-300 p-5 fixed">
+  <br><br>
+  <h1 class="text-center text-4xl md:text-5xl font-bold italic">Update Your Profile</h1>
+  <div class="mt-5 flex flex-col items-center justify-center">
+    <form action="/update/<%= user._id%>" method="post" class="w-full md:w-1/2">
+      
+      <!-- Bio input -->
+      <input type="text" value="<%= user.bio%>" placeholder="Enter bio" class="p-4 rounded-md block mb-3 w-full" name="bio" maxlength="22">
+      
+      <!-- Address input -->
+      <input type="text" value="<%= user.homeaddress%>" placeholder="Enter your address" class="p-4 rounded-md block mb-3 w-full" name="homeaddress" maxlength="40">
+      
+      <!-- Submit button -->
+      <input type="submit" value="Update" class="p-4 bg-yellow-500 text-black w-full rounded-md hover:bg-yellow-400 transition duration-200">
+    </form>
+  </div>
+</div>
+
+<% include ./partials/footer.ejs %>
